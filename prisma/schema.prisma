@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// MATCH EXAMPLE
+
+// LEAGUE: BRADFORD District Chess Association
+// DIVISION: ONE
+// SEASON: 2022-23
+// FIXTURE: Ilkley Chess Club (home)  vs Bingley Chess Club (away)
+// RESULT:
+//    Board No.   Home Players   Result      Away Players
+//      1.         A. Smith       1 - 0       P. Woood
+//      2.         J. Bloggs    1/2 - 1/2     B. Cook
+//      3.         C. Jones      0  - 1       A. Doran
+//      4.         D. Davies     1  - 0       O. Black
+//    TOTAL SCORE:            * 2.5 - 1.5 *
+
+
+model PlayerRating {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  type       String // example: "standard", "rapidplay", "blitz"
+  federation String // example: "FIDE", "ECF", "USCF"
+  rating     Int?
+  Player     Player?  @relation(fields: [playerId], references: [id])
+  playerId   Int?
+}
+
+model Player {
+  id         Int            @id @default(autoincrement())
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  firstName  String
+  lastName   String
+  middleName String?
+  Team       Team?          @relation(fields: [teamId], references: [id])
+  teamId     Int?
+  ratings    PlayerRating[] // A player can hold multiple ratings across multiple federations, these change regularly overtime
+}
+
+model Team {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  name       String    @unique
+  players    Player[]
+  Division   Division? @relation(fields: [divisionId], references: [id])
+  divisionId Int?
+}
+
+model Division {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  League    League?  @relation(fields: [leagueId], references: [id])
+  leagueId  Int?
+  teams     Team[]
+}
+
+model League {
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String
+  divisions Division[]
+}
+
+model Fixture {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  divisionId Int?
+  date       DateTime
+  Season     Season?  @relation(fields: [seasonId], references: [id])
+  seasonId   Int?
+  // TODO: unclear how best to model a "fixture"
+  homeTeam   Team     @relation(name: "HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam   Team     @relation(name: "AwayTeam", fields: [awayTeamId], references: [id])
+  homeTeamId Int
+  awayTeamId Int
+  result     Result   @relation(fields: [resultId], references: [id])
+  resultId   Int
+}
+
+// DISCUSS: it is perhaps not necessary to have a "Results" table. However, we need a means to grab the details of a match (see below of a match example)
+model Result {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Fixture   Fixture[]
+}
+
+// NOT STRICTLY Necessary (but would reduce complexity when querying for fixtures for a specific season only!)
+model Season {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  fixtures  Fixture[]
+}
+
+
+
+
+
