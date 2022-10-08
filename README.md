@@ -1,7 +1,7 @@
 <p align="center">
     <img
       alt="The Chess Centre"
-      src="https://github.com/Chess-Centre/league/blob/master/img/logo.png?raw=true"
+      src="https://github.com/Chess-Centre/leagues/blob/master/img/logo.png?raw=true"
       width="100"
     />
   <h1 align="center"> Chess Leagues </h1>
