@@ -1,19 +1,46 @@
-# Welcome to Remix!
+<p align="center">
+    <img
+      alt="The Chess Centre"
+      src="https://github.com/Chess-Centre/league/blob/master/img/logo.png?raw=true"
+      width="100"
+    />
+  <h1 align="center"> Chess Leagues </h1>
+</p>
+<p align="center">
+  <h3 align="center"> By The Chess Centre </h3>
+</p>
 
-- [Remix Docs](https://remix.run/docs)
+<p align="center">
+    <img
+      alt="PRs Welcome"
+      src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat"
+    />
+</p>
 
-## Deployment
+## Objective
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
+To provide a clear, easy to use league results application. Enabling players and organisers to effortlessly find and input key information to offer near real-time information regarding venues, fixtures and results; all accessible to new and existing chess enthusiasts.
 
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
+## Goals
 
-```sh
-npm i -g vercel
-vercel
-```
+- 😴 No instruction manuals - if it requires explaining, it requires redesigning
+- 💰 Low cost - finanically self sufficient
+- ❤️ Free to use, forever
+- 🚀 Players "to go" for the latest league results
+- 🧑🏽‍🤝‍🧑🏽 Compliments online chess, bridging the gap between them - particularly [lichess](https://github.com/lichess-org)
 
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
+## Tech Stack
+
+- Remix - [Docs](https://remix.run/docs)
+- React - [Docs](https://reactjs.org/)
+- NodeJs - [Docs](https://nodejs.org/en/)
+- TypeScript - [Docs](https://www.typescriptlang.org/)
+- Prisma - [Docs](https://www.prisma.io/)
+- Tailwind CSS - [Docs](https://tailwindui.com/)
+
+## Architecture
+
+- TBC
 
 ## Development
 
@@ -30,5 +57,3 @@ npm run dev
 ```
 
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
