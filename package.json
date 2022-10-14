@@ -23,7 +23,7 @@
     "/public/build"
   ],
   "dependencies": {
-    "@prisma/client": "4.4.0",
+    "@prisma/client": "^4.4.0",
     "@remix-run/node": "1.7.2",
     "@remix-run/react": "1.7.2",
     "@remix-run/vercel": "1.7.2",
