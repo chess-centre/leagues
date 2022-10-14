@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "connersomerville",
+      "name": "Conner Somerville",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5721950?v=4",
+      "profile": "https://github.com/connersomerville",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "leagues",
+  "projectOwner": "chess-centre"
+}
