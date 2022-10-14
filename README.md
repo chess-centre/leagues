@@ -1,4 +1,7 @@
 <p align="center">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
     <img
       alt="The Chess Centre"
       src="https://github.com/Chess-Centre/leagues/blob/master/img/logo.png?raw=true"
@@ -57,3 +60,25 @@ npm run dev
 ```
 
 Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/connersomerville"><img src="https://avatars.githubusercontent.com/u/5721950?v=4?s=100" width="100px;" alt="Conner Somerville"/><br /><sub><b>Conner Somerville</b></sub></a><br /><a href="#infra-connersomerville" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Tests">⚠️</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
