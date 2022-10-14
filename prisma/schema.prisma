@@ -1,0 +1,137 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+enum GameType {
+  standard
+  rapidplay
+  blitz
+}
+
+enum Federation {
+  FIDE
+  ECF
+  USCF
+}
+
+model PlayerRating {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  type       GameType
+  federation Federation
+  rating     Int
+  playerId   Int
+  player     Player     @relation(fields: [playerId], references: [id])
+
+  @@index([playerId])
+}
+
+model Player {
+  id              Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  firstName       String
+  lastName        String
+  middleName      String?
+  teamId          Int?
+  team            Team?          @relation(fields: [teamId], references: [id])
+  ratings         PlayerRating[]
+  fixturesAsWhite Fixture[]      @relation("PlayerWhite")
+  fixturesAsBlack Fixture[]      @relation("PlayerBlack")
+  fixtures        Fixture[]      @relation("Players")
+
+  @@index([teamId])
+}
+
+model Team {
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  name         String    @unique
+  players      Player[]
+  divisionId   Int?
+  division     Division? @relation(fields: [divisionId], references: [id])
+  homeFixtures Fixture[] @relation("HomeTeam")
+  awayFixtures Fixture[] @relation("AwayTeam")
+
+  @@index([divisionId])
+}
+
+model Division {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  leagueId  Int
+  league    League    @relation(fields: [leagueId], references: [id])
+  fixtures  Fixture[]
+  teams     Team[]
+
+  @@index([leagueId])
+}
+
+model League {
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String
+  divisions Division[]
+}
+
+model Season {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  displayName String
+  start       DateTime
+  end         DateTime
+  fixtures    Fixture[]
+}
+
+model Fixture {
+  id         BigInt   @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  date       DateTime
+  seasonId   Int
+  season     Season   @relation(fields: [seasonId], references: [id])
+  divisionId Int
+  division   Division @relation(fields: [divisionId], references: [id])
+
+  homeTeamId Int
+  awayTeamId Int
+  homeTeam   Team @relation(name: "HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam   Team @relation(name: "AwayTeam", fields: [awayTeamId], references: [id])
+
+  players       Player[] @relation("Players")
+  playerWhiteId Int
+  playerBlackId Int
+  playerWhite   Player   @relation(name: "PlayerWhite", fields: [playerWhiteId], references: [id])
+  playerBlack   Player   @relation(name: "PlayerBlack", fields: [playerBlackId], references: [id])
+  result        Result?
+
+  @@index([playerWhiteId])
+  @@index([playerBlackId])
+  @@index([seasonId])
+  @@index([divisionId])
+  @@index([homeTeamId])
+  @@index([awayTeamId])
+}
+
+model Result {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fixtureId BigInt   @unique
+  fixture   Fixture  @relation(fields: [fixtureId], references: [id])
+
+  @@index([fixtureId])
+}
