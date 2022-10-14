@@ -1,7 +1,4 @@
 <p align="center">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
     <img
       alt="The Chess Centre"
       src="https://github.com/Chess-Centre/leagues/blob/master/img/logo.png?raw=true"
@@ -19,6 +16,10 @@
       src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat"
     />
 </p>
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Objective
 
@@ -71,7 +72,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/connersomerville"><img src="https://avatars.githubusercontent.com/u/5721950?v=4?s=100" width="100px;" alt="Conner Somerville"/><br /><sub><b>Conner Somerville</b></sub></a><br /><a href="#infra-connersomerville" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Tests">⚠️</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Code">💻</a></td>
+      <td align="center">
+        <a href="https://github.com/connersomerville"><img src="https://avatars.githubusercontent.com/u/5721950?v=4?s=100" width="100px;" alt="Conner Somerville"/><br /><sub><b>Conner Somerville</b></sub></a><br /><a href="#infra-connersomerville" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> 
+        <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Tests">⚠️</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Code">💻</a>
+       </td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/matt-d-webb"><img src="https://avatars.githubusercontent.com/u/36933715?v=4?s=100" width="100px;" alt="Matt D. Webb"/><br /><sub><b>Matt D. Webb</b></sub></a><br /><a href="https://github.com/chess-centre/leagues/commits?author=matt-d-webb" title="Code">💻</a></td
     </tr>
   </tbody>
 </table>
