@@ -27,9 +27,9 @@ model PlayerRating {
   updatedAt  DateTime   @updatedAt
   type       GameType
   federation Federation
-  rating     Int?
-  playerId   Int?
-  player     Player?    @relation(fields: [playerId], references: [id])
+  rating     Int
+  playerId   Int
+  player     Player     @relation(fields: [playerId], references: [id])
 
   @@index([playerId])
 }
