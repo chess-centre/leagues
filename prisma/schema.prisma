@@ -104,7 +104,7 @@ model Fixture {
   seasonId   Int
   season     Season   @relation(fields: [seasonId], references: [id])
   divisionId Int
-  Division   Division @relation(fields: [divisionId], references: [id])
+  division   Division @relation(fields: [divisionId], references: [id])
 
   homeTeamId Int
   awayTeamId Int
