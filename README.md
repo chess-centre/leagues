@@ -37,6 +37,7 @@ To provide a clear, easy to use league results application. Enabling players and
 - TypeScript - [Docs](https://www.typescriptlang.org/)
 - Prisma - [Docs](https://www.prisma.io/)
 - Tailwind CSS - [Docs](https://tailwindui.com/)
+- PlanetScale - [Doc](https://planetscale.com/docs)
 
 ## Architecture
 
