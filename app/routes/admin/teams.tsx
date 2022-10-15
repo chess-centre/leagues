@@ -11,25 +11,25 @@ import {
   useTransition,
 } from "@remix-run/react";
 import Button from "~/components/core/button";
-import { PLAYER_SCHEMA } from "~/db/schemas.server";
+import { TEAM_SCHEMA } from "~/db/schemas.server";
 import Input from "~/components/core/input";
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import ErrorAlert from "~/components/core/alert/error";
 import { AnimatePresence, motion } from "framer-motion";
-import { createPlayer, getPlayers } from "~/db/players.server";
+import { createTeam, getTeams } from "~/db/teams.server";
 
-type LoaderData = Awaited<ReturnType<typeof getPlayers>>;
+type LoaderData = Awaited<ReturnType<typeof getTeams>>;
 
 export const loader: LoaderFunction = async () => {
-  return getPlayers();
+  return getTeams();
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
 
-  const parsedInput = PLAYER_SCHEMA.safeParse(values);
+  const parsedInput = TEAM_SCHEMA.safeParse(values);
 
   if (!parsedInput.success) {
     const errors = parsedInput.error.errors.reduce((acc, { path, message }) => {
@@ -39,17 +39,17 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const { data } = parsedInput;
-  return createPlayer({
-    player: data,
+  return createTeam({
+    team: data,
     select: { id: true },
   });
 };
 
-export default function Players() {
+export default function Teams() {
   const formRef = useRef<HTMLFormElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
+  const teamName = useRef<HTMLInputElement>(null);
   const transition = useTransition();
-  const players = useLoaderData<LoaderData>();
+  const teams = useLoaderData<LoaderData>();
   const actionData = useActionData();
   const isSubmitting = transition.state === "submitting";
   const isSubmitted = actionData?.id;
@@ -57,8 +57,8 @@ export default function Players() {
   useEffect(() => {
     if (isSubmitted) {
       formRef?.current?.reset();
-      firstNameRef?.current?.focus();
-      toast.success("Successfully added person");
+      teamName?.current?.focus();
+      toast.success("Successfully added team");
     }
   }, [isSubmitted]);
 
@@ -67,27 +67,12 @@ export default function Players() {
       <Form ref={formRef} method="post" className="w-full px-2 md:w-1/2">
         <fieldset disabled={transition.state === "submitting"}>
           <Input
-            ref={firstNameRef}
+            ref={teamName}
             required
-            label="First Name"
-            name="firstName"
-            defaultValue={actionData?.values?.firstName}
-            error={actionData?.errors?.firstName}
-          />
-
-          <Input
-            label="Middle Name"
-            name="middleName"
-            defaultValue={actionData?.values?.middleName}
-            error={actionData?.errors?.middleName}
-          />
-
-          <Input
-            required
-            label="Last Name"
-            name="lastName"
-            defaultValue={actionData?.values?.lastName}
-            error={actionData?.errors?.lastName}
+            label="Team Name"
+            name="name"
+            defaultValue={actionData?.values?.name}
+            error={actionData?.errors?.name}
           />
 
           <div className="flex justify-end">
@@ -99,17 +84,19 @@ export default function Players() {
       </Form>
 
       <motion.div className="grow p-2 flex flex-col gap-2" layout>
-        {players?.length ? (
-          players.map((player) => (
-            <AnimatePresence key={player.id} mode="popLayout">
+        {teams?.length ? (
+          teams.map((team) => (
+            <AnimatePresence key={team.id} mode="popLayout">
               <motion.div
                 className="shadow ring-1 ring-black ring-opacity-5 rounded-md p-2"
                 whileHover={{ scale: 1.01 }}
-              >{`${player.firstName} ${player.lastName}`}</motion.div>
+              >
+                {team.name}
+              </motion.div>
             </AnimatePresence>
           ))
         ) : (
-          <p>No players yet...</p>
+          <p>No teams yet...</p>
         )}
       </motion.div>
     </div>
@@ -119,7 +106,7 @@ export default function Players() {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <ErrorAlert
-      title="Error occurred in player form"
+      title="Error occurred in team form"
       detail={error.message}
     ></ErrorAlert>
   );

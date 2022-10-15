@@ -3,7 +3,7 @@ import Header from "~/components/header";
 
 const ADMIN_LINKS = [
   { label: "Players", link: "/admin/players" },
-  { label: "Clubs", link: "/admin/clubs" },
+  { label: "Teams", link: "/admin/teams" },
   { label: "Leagues", link: "/admin/leagues" },
   { label: "Fixtures", link: "/admin/fixtures" },
 ];
