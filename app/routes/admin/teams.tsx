@@ -18,18 +18,29 @@ import toast from "react-hot-toast";
 import ErrorAlert from "~/components/core/alert/error";
 import { AnimatePresence, motion } from "framer-motion";
 import { createTeam, getTeams } from "~/db/teams.server";
+import Select from "~/components/core/select";
+import { getDivisions } from "~/db/divisions.server";
 
-type LoaderData = Awaited<ReturnType<typeof getTeams>>;
+type LoaderData = {
+  divisions: Awaited<ReturnType<typeof getDivisions>>;
+  teams: Awaited<ReturnType<typeof getTeams>>;
+};
 
 export const loader: LoaderFunction = async () => {
-  return getTeams();
+  const divisions = await getDivisions();
+  const teams = await getTeams();
+
+  return json({ divisions, teams });
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
 
-  const parsedInput = TEAM_SCHEMA.safeParse(values);
+  const parsedInput = TEAM_SCHEMA.safeParse({
+    ...values,
+    ...(values?.divisionId ? { divisionId: Number(values.divisionId) } : {}),
+  });
 
   if (!parsedInput.success) {
     const errors = parsedInput.error.errors.reduce((acc, { path, message }) => {
@@ -49,7 +60,7 @@ export default function Teams() {
   const formRef = useRef<HTMLFormElement>(null);
   const teamName = useRef<HTMLInputElement>(null);
   const transition = useTransition();
-  const teams = useLoaderData<LoaderData>();
+  const { divisions, teams } = useLoaderData<LoaderData>();
   const actionData = useActionData();
   const isSubmitting = transition.state === "submitting";
   const isSubmitted = actionData?.id;
@@ -73,6 +84,15 @@ export default function Teams() {
             name="name"
             defaultValue={actionData?.values?.name}
             error={actionData?.errors?.name}
+          />
+
+          <Select
+            label="Division"
+            name="divisionId"
+            options={divisions.map((division) => ({
+              label: division.name,
+              value: division.id,
+            }))}
           />
 
           <div className="flex justify-end">

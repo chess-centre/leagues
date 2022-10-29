@@ -54,7 +54,7 @@ const Input = (
           className={classNames(
             error && "text-red-700 ring-offset-2 ring-2 ring-red-500",
             disabled && "cursor-not-allowed",
-            "my-2 rounded-md bg-transparent shadow-sm border-gray-400  focus:border-primary-500 focus:ring-primary-500"
+            "w-full my-2 rounded-md bg-transparent shadow-sm border-gray-400  focus:border-primary-500 focus:ring-primary-500"
           )}
           disabled={disabled}
           required={required}
