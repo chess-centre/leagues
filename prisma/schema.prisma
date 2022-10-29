@@ -35,18 +35,15 @@ model PlayerRating {
 }
 
 model Player {
-  id              Int            @id @default(autoincrement())
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  firstName       String
-  lastName        String
-  middleName      String?
-  teamId          Int?
-  team            Team?          @relation(fields: [teamId], references: [id])
-  ratings         PlayerRating[]
-  fixturesAsWhite Fixture[]      @relation("PlayerWhite")
-  fixturesAsBlack Fixture[]      @relation("PlayerBlack")
-  fixtures        Fixture[]      @relation("Players")
+  id         Int            @id @default(autoincrement())
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  firstName  String
+  lastName   String
+  middleName String?
+  teamId     Int?
+  team       Team?          @relation(fields: [teamId], references: [id])
+  ratings    PlayerRating[]
 
   @@index([teamId])
 }
@@ -111,15 +108,6 @@ model Fixture {
   homeTeam   Team @relation(name: "HomeTeam", fields: [homeTeamId], references: [id])
   awayTeam   Team @relation(name: "AwayTeam", fields: [awayTeamId], references: [id])
 
-  players       Player[] @relation("Players")
-  playerWhiteId Int
-  playerBlackId Int
-  playerWhite   Player   @relation(name: "PlayerWhite", fields: [playerWhiteId], references: [id])
-  playerBlack   Player   @relation(name: "PlayerBlack", fields: [playerBlackId], references: [id])
-  result        Result?
-
-  @@index([playerWhiteId])
-  @@index([playerBlackId])
   @@index([seasonId])
   @@index([divisionId])
   @@index([homeTeamId])
@@ -130,8 +118,4 @@ model Result {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  fixtureId BigInt   @unique
-  fixture   Fixture  @relation(fields: [fixtureId], references: [id])
-
-  @@index([fixtureId])
 }
