@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "test/utils";
-import Heading from "./heading";
+import Heading from ".";
 
 describe("Heading", async () => {
   test("should render the children passed to the component", () => {
