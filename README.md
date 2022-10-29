@@ -18,7 +18,9 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Objective
@@ -41,6 +43,7 @@ To provide a clear, easy to use league results application. Enabling players and
 - TypeScript - [Docs](https://www.typescriptlang.org/)
 - Prisma - [Docs](https://www.prisma.io/)
 - Tailwind CSS - [Docs](https://tailwindui.com/)
+- PlanetScale - [Doc](https://planetscale.com/docs)
 
 ## Architecture
 
@@ -76,7 +79,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
         <a href="https://github.com/connersomerville"><img src="https://avatars.githubusercontent.com/u/5721950?v=4?s=100" width="100px;" alt="Conner Somerville"/><br /><sub><b>Conner Somerville</b></sub></a><br /><a href="#infra-connersomerville" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> 
         <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Tests">⚠️</a> <a href="https://github.com/chess-centre/leagues/commits?author=connersomerville" title="Code">💻</a>
       </td>
-      <td align="center"><a href="https://github.com/matt-d-webb"><img src="https://avatars.githubusercontent.com/u/36933715?v=4?s=100" width="100px;" alt="Matt D. Webb"/><br /><sub><b>Matt D. Webb</b></sub></a><br /><a href="https://github.com/chess-centre/leagues/commits?author=matt-d-webb" title="Code">💻</a></td
+      <td align="center"><a href="https://github.com/matt-d-webb"><img src="https://avatars.githubusercontent.com/u/36933715?v=4?s=100" width="100px;" alt="Matt D. Webb"/><br /><sub><b>Matt D. Webb</b></sub></a><br /><a href="https://github.com/chess-centre/leagues/commits?author=matt-d-webb" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
