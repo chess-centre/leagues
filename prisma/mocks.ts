@@ -145,95 +145,95 @@ export const players = [
 export const ratings = [
   // Mountain Lions
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1154,
     playerId: 1
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 906,
     playerId: 2
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 792,
     playerId: 3
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 507,
     playerId: 4
   },
   // Night Hawks
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 728,
     playerId: 5
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 749,
     playerId: 6
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 702,
     playerId: 7
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 397,
     playerId: 8
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 228,
     playerId: 9
   },
   // Leopards
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1527,
     playerId: 10
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1306,
     playerId: 11
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1178,
     playerId: 12
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1223,
     playerId: 13
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 742,
     playerId: 14
   },
   // Orangutans
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1188,
     playerId: 15
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 1088,
     playerId: 16
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 669,
     playerId: 17
   },
   {
-    type: Federation.ECF,
+    federation: Federation.ECF,
     rating: 369,
     playerId: 18
   }
