@@ -13,6 +13,16 @@ export const createPlayer = async ({ player, select }: CreatePlayerProps) =>
     ...(select ? { select } : {}),
   });
 
+type DeletePlayerProps = {
+  playerId: number;
+};
+export const deletePlayer = async ({ playerId }: DeletePlayerProps) =>
+  prisma.player.delete({
+    where: {
+      id: playerId,
+    },
+  });
+
 export const getPlayers = async () => {
   const players = await prisma.player.findMany();
 
