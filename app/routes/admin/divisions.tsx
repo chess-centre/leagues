@@ -11,35 +11,35 @@ import {
   useTransition,
 } from "@remix-run/react";
 import Button from "~/components/core/button";
-import { PLAYER_SCHEMA } from "~/db/schemas.server";
+import { DIVISION_SCHEMA } from "~/db/schemas.server";
 import Input from "~/components/core/input";
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import ErrorAlert from "~/components/core/alert/error";
 import { AnimatePresence, motion } from "framer-motion";
-import { createPlayer, getPlayers } from "~/db/players.server";
+import { createDivision, getDivisions } from "~/db/divisions.server";
+import { getLeagues } from "~/db/leagues.server";
 import Select from "~/components/core/select";
-import { getTeams } from "~/db/teams.server";
 
 type LoaderData = {
-  players: Awaited<ReturnType<typeof getPlayers>>;
-  teams: Awaited<ReturnType<typeof getTeams>>;
+  divisions: Awaited<ReturnType<typeof getDivisions>>;
+  leagues: Awaited<ReturnType<typeof getLeagues>>;
 };
 
 export const loader: LoaderFunction = async () => {
-  const players = await getPlayers();
-  const teams = await getTeams();
+  const divisions = await getDivisions();
+  const leagues = await getLeagues();
 
-  return json({ players, teams });
+  return json({ divisions, leagues });
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
 
-  const parsedInput = PLAYER_SCHEMA.safeParse({
+  const parsedInput = DIVISION_SCHEMA.safeParse({
     ...values,
-    ...(values?.teamId ? { teamId: Number(values.teamId) } : {}),
+    ...(values?.leagueId ? { leagueId: Number(values.leagueId) } : {}),
   });
 
   if (!parsedInput.success) {
@@ -50,17 +50,18 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const { data } = parsedInput;
-  return createPlayer({
-    player: data,
+
+  return createDivision({
+    division: data,
     select: { id: true },
   });
 };
 
-export default function Players() {
+export default function Divisions() {
   const formRef = useRef<HTMLFormElement>(null);
-  const firstNameRef = useRef<HTMLInputElement>(null);
+  const divisionName = useRef<HTMLInputElement>(null);
   const transition = useTransition();
-  const { players, teams } = useLoaderData<LoaderData>();
+  const { divisions, leagues } = useLoaderData<LoaderData>();
   const actionData = useActionData();
   const isSubmitting = transition.state === "submitting";
   const isSubmitted = actionData?.id;
@@ -68,8 +69,8 @@ export default function Players() {
   useEffect(() => {
     if (isSubmitted) {
       formRef?.current?.reset();
-      firstNameRef?.current?.focus();
-      toast.success("Successfully added person");
+      divisionName?.current?.focus();
+      toast.success("Successfully added division");
     }
   }, [isSubmitted]);
 
@@ -78,36 +79,23 @@ export default function Players() {
       <Form ref={formRef} method="post" className="w-full px-2 md:w-1/2">
         <fieldset disabled={transition.state === "submitting"}>
           <Input
-            ref={firstNameRef}
+            ref={divisionName}
             required
-            label="First Name"
-            name="firstName"
-            defaultValue={actionData?.values?.firstName}
-            error={actionData?.errors?.firstName}
-          />
-
-          <Input
-            label="Middle Name"
-            name="middleName"
-            defaultValue={actionData?.values?.middleName}
-            error={actionData?.errors?.middleName}
-          />
-
-          <Input
-            required
-            label="Last Name"
-            name="lastName"
-            defaultValue={actionData?.values?.lastName}
-            error={actionData?.errors?.lastName}
+            label="Division Name"
+            name="name"
+            defaultValue={actionData?.values?.name}
+            error={actionData?.errors?.name}
           />
 
           <Select
-            label="Team"
-            name="teamId"
-            options={teams.map((team) => ({
-              label: team.name,
-              value: team.id,
+            label="League"
+            name="leagueId"
+            options={leagues.map((league) => ({
+              label: league.name,
+              value: league.id,
             }))}
+            defaultValue={actionData?.values?.leagueId}
+            error={actionData?.errors?.leagueId}
           />
 
           <div className="flex justify-end">
@@ -119,17 +107,19 @@ export default function Players() {
       </Form>
 
       <motion.div className="grow p-2 flex flex-col gap-2" layout>
-        {players?.length ? (
-          players.map((player) => (
-            <AnimatePresence key={player.id} mode="popLayout">
+        {divisions?.length ? (
+          divisions.map((division) => (
+            <AnimatePresence key={division.id} mode="popLayout">
               <motion.div
                 className="shadow ring-1 ring-black ring-opacity-5 rounded-md p-2"
                 whileHover={{ scale: 1.01 }}
-              >{`${player.firstName} ${player.lastName}`}</motion.div>
+              >
+                {division.name}
+              </motion.div>
             </AnimatePresence>
           ))
         ) : (
-          <p>No players yet...</p>
+          <p>No divisions yet...</p>
         )}
       </motion.div>
     </div>
@@ -139,7 +129,7 @@ export default function Players() {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <ErrorAlert
-      title="Error occurred in player form"
+      title="Error occurred in division form"
       detail={error.message}
     ></ErrorAlert>
   );

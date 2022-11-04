@@ -22,6 +22,6 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noEmit": true,
-    "types": ["cypress", "@testing-library/cypress"]
+    "types": ["cypress", "@testing-library/cypress", "node"]
   }
 }

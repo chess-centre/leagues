@@ -5,6 +5,7 @@ const ADMIN_LINKS = [
   { label: "Players", link: "/admin/players" },
   { label: "Teams", link: "/admin/teams" },
   { label: "Leagues", link: "/admin/leagues" },
+  { label: "Divisions", link: "/admin/divisions" },
   { label: "Fixtures", link: "/admin/fixtures" },
 ];
 
