@@ -16,6 +16,16 @@ export const createDivision = async ({
     ...(select ? { select } : {}),
   });
 
+type DeleteDivisionProps = {
+  divisionId: number;
+};
+export const deleteDivision = async ({ divisionId }: DeleteDivisionProps) =>
+  prisma.division.delete({
+    where: {
+      id: divisionId,
+    },
+  });
+
 export const getDivisions = async () => {
   const divisions = await prisma.division.findMany();
 

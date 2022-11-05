@@ -10,16 +10,23 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import Button from "~/components/core/button";
+import IconButton from "~/components/core/button/icon";
 import { DIVISION_SCHEMA } from "~/db/schemas.server";
 import Input from "~/components/core/input";
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import ErrorAlert from "~/components/core/alert/error";
 import { AnimatePresence, motion } from "framer-motion";
-import { createDivision, getDivisions } from "~/db/divisions.server";
+import {
+  createDivision,
+  deleteDivision,
+  getDivisions,
+} from "~/db/divisions.server";
 import { getLeagues } from "~/db/leagues.server";
 import Select from "~/components/core/select";
+import { z } from "zod";
 
 type LoaderData = {
   divisions: Awaited<ReturnType<typeof getDivisions>>;
@@ -35,26 +42,65 @@ export const loader: LoaderFunction = async () => {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  const values = Object.fromEntries(formData);
+  const { _action, ...values } = Object.fromEntries(formData);
 
-  const parsedInput = DIVISION_SCHEMA.safeParse({
-    ...values,
-    ...(values?.leagueId ? { leagueId: Number(values.leagueId) } : {}),
-  });
+  switch (_action) {
+    case "delete":
+      const deleteInput = z
+        .object({
+          divisionId: z.number(),
+        })
+        .safeParse({
+          ...values,
+          ...(values?.divisionId
+            ? { divisionId: Number(values.divisionId) }
+            : {}),
+        });
 
-  if (!parsedInput.success) {
-    const errors = parsedInput.error.errors.reduce((acc, { path, message }) => {
-      return { ...acc, [path.join(".")]: message };
-    }, {});
-    return json({ errors, values });
+      if (!deleteInput.success) {
+        const errors = deleteInput.error.errors.reduce(
+          (acc, { path, message }) => {
+            return { ...acc, [path.join(".")]: message };
+          },
+          {}
+        );
+        return json({ errors, values });
+      }
+
+      const {
+        data: { divisionId },
+      } = deleteInput;
+      await deleteDivision({ divisionId });
+
+      return json({ result: "deleted" });
+
+    case "create":
+      const parsedInput = DIVISION_SCHEMA.safeParse({
+        ...values,
+        ...(values?.leagueId ? { leagueId: Number(values.leagueId) } : {}),
+      });
+
+      if (!parsedInput.success) {
+        const errors = parsedInput.error.errors.reduce(
+          (acc, { path, message }) => {
+            return { ...acc, [path.join(".")]: message };
+          },
+          {}
+        );
+        return json({ errors, values });
+      }
+
+      const { data } = parsedInput;
+
+      await createDivision({
+        division: data,
+        select: { id: true },
+      });
+
+      return json({ result: "created" });
+    default:
+      throw new Error("Unrecognised request");
   }
-
-  const { data } = parsedInput;
-
-  return createDivision({
-    division: data,
-    select: { id: true },
-  });
 };
 
 export default function Divisions() {
@@ -63,16 +109,24 @@ export default function Divisions() {
   const transition = useTransition();
   const { divisions, leagues } = useLoaderData<LoaderData>();
   const actionData = useActionData();
-  const isSubmitting = transition.state === "submitting";
-  const isSubmitted = actionData?.id;
+  const pendingAction =
+    transition.state === "submitting" &&
+    transition?.submission?.formData?.get("_action");
+  const isSubmitting = !!pendingAction;
+  const isSubmitted = actionData?.result;
 
   useEffect(() => {
     if (isSubmitted) {
       formRef?.current?.reset();
       divisionName?.current?.focus();
-      toast.success("Successfully added division");
+      if (actionData?.result === "created") {
+        toast.success("Successfully added division");
+      }
+      if (actionData?.result === "deleted") {
+        toast.success("Successfully deleted division");
+      }
     }
-  }, [isSubmitted]);
+  }, [actionData?.result, isSubmitted]);
 
   return (
     <div className="flex flex-wrap">
@@ -99,8 +153,14 @@ export default function Divisions() {
           />
 
           <div className="flex justify-end">
-            <Button type="submit" loading={isSubmitting}>
-              {isSubmitting ? "Adding..." : "Add"}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              loading={pendingAction === "create"}
+              name="_action"
+              value="create"
+            >
+              {pendingAction === "create" ? "Adding..." : "Add"}
             </Button>
           </div>
         </fieldset>
@@ -114,7 +174,27 @@ export default function Divisions() {
                 className="shadow ring-1 ring-black ring-opacity-5 rounded-md p-2"
                 whileHover={{ scale: 1.01 }}
               >
-                {division.name}
+                <Form method="post" className="w-full">
+                  <fieldset
+                    className="flex items-center justify-between"
+                    disabled={isSubmitting}
+                  >
+                    <span>{division.name}</span>
+                    <Input
+                      type="hidden"
+                      name="divisionId"
+                      value={division.id}
+                    />
+                    <IconButton
+                      type="submit"
+                      disabled={isSubmitting}
+                      name="_action"
+                      value="delete"
+                      icon={<XMarkIcon className="h-6 w-6" />}
+                      label={`Delete ${division.name}`}
+                    />
+                  </fieldset>
+                </Form>
               </motion.div>
             </AnimatePresence>
           ))

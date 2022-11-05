@@ -13,6 +13,16 @@ export const createLeague = async ({ league, select }: CreateLeagueProps) =>
     ...(select ? { select } : {}),
   });
 
+type DeleteLeagueProps = {
+  leagueId: number;
+};
+export const deleteLeague = async ({ leagueId }: DeleteLeagueProps) =>
+  prisma.league.delete({
+    where: {
+      id: leagueId,
+    },
+  });
+
 export const getLeagues = async () => {
   const leagues = await prisma.league.findMany();
 

@@ -10,6 +10,7 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import Button from "~/components/core/button";
 import IconButton from "~/components/core/button/icon";
 import { PLAYER_SCHEMA } from "~/db/schemas.server";
@@ -21,7 +22,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createPlayer, deletePlayer, getPlayers } from "~/db/players.server";
 import Select from "~/components/core/select";
 import { getTeams } from "~/db/teams.server";
-import { XMarkIcon } from "@heroicons/react/20/solid";
 import { z } from "zod";
 
 type LoaderData = {
