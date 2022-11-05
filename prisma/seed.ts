@@ -4,32 +4,31 @@ import { teams, players, ratings, fixtures } from "./mocks";
 const prisma = new PrismaClient();
 
 async function seed() {
-
   // League
   await prisma.league.create({
     data: {
       id: 1,
-      name: 'Wharfedale Junior League',
-    }
+      name: "Wharfedale Junior League",
+    },
   });
 
   // Division
   await prisma.division.create({
     data: {
       id: 1,
-      name: 'Division One',
-      leagueId: 1
-    }
+      name: "Division One",
+      leagueId: 1,
+    },
   });
 
   // Season
   await prisma.season.create({
     data: {
       id: 1,
-      displayName: '2022-23',
+      name: "2022-23",
       start: `2022-09-01T00:00:00.000Z`,
       end: `2022-08-31T00:00:00.000Z`,
-    }
+    },
   });
 
   // Teams
@@ -46,7 +45,6 @@ async function seed() {
   await prisma.fixture.createMany({ data: fixtures });
 
   console.log(`Database has been seeded. 🌱`);
-
 }
 
 seed()

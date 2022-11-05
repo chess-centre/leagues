@@ -84,17 +84,17 @@ model League {
 }
 
 model Season {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  displayName String
-  start       DateTime
-  end         DateTime
-  fixtures    Fixture[]
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  start     DateTime
+  end       DateTime
+  fixtures  Fixture[]
 }
 
 model Fixture {
-  id         BigInt   @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   date       DateTime
