@@ -14,9 +14,9 @@ type InputProps = {
   name: string;
   disabled?: boolean;
   placeholder?: string;
-  label: string;
-  defaultValue?: string;
-  value?: string;
+  label?: string;
+  defaultValue?: number | string;
+  value?: number | string;
   type?: HTMLInputTypeAttribute;
   onChange?: (e: ChangeEvent<HTMLInputElement>, value: string) => void;
   onBlur?: FocusEventHandler<HTMLInputElement>;

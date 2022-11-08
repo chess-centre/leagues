@@ -6,6 +6,8 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   loading?: boolean;
+  name?: string;
+  value?: string;
   children: ReactNode;
 };
 
@@ -13,16 +15,20 @@ const Button = ({
   children,
   disabled = false,
   loading = false,
+  name,
+  value,
   type = "button",
 }: ButtonProps) => {
   return (
     <button
       className={classNames(
-        loading && "opacity-80 cursor-not-allowed",
+        (loading || disabled) && "opacity-80 cursor-not-allowed",
         "inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-base font-medium text-gray-100 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 shadow ring-1 ring-black ring-opacity-5"
       )}
       disabled={disabled}
       type={type}
+      name={name}
+      value={value}
     >
       {children}
       {loading && (

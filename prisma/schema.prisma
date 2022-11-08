@@ -42,7 +42,7 @@ model Player {
   lastName   String
   middleName String?
   teamId     Int?
-  team       Team?          @relation(fields: [teamId], references: [id])
+  team       Team?          @relation(fields: [teamId], references: [id], onDelete: Cascade)
   ratings    PlayerRating[]
 
   @@index([teamId])
@@ -55,7 +55,7 @@ model Team {
   name         String    @unique
   players      Player[]
   divisionId   Int?
-  division     Division? @relation(fields: [divisionId], references: [id])
+  division     Division? @relation(fields: [divisionId], references: [id], onDelete: Cascade)
   homeFixtures Fixture[] @relation("HomeTeam")
   awayFixtures Fixture[] @relation("AwayTeam")
 
@@ -68,7 +68,7 @@ model Division {
   updatedAt DateTime  @updatedAt
   name      String
   leagueId  Int
-  league    League    @relation(fields: [leagueId], references: [id])
+  league    League    @relation(fields: [leagueId], references: [id], onDelete: Cascade)
   fixtures  Fixture[]
   teams     Team[]
 
