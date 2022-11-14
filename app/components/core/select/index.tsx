@@ -40,10 +40,7 @@ const Select = ({
 
   return (
     <div>
-      <label
-        htmlFor={selectId}
-        className="block text-sm font-medium text-gray-700"
-      >
+      <label htmlFor={selectId} className="block font-medium text-gray-700">
         {label}
       </label>
       <select

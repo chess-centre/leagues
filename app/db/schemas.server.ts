@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+export const VALID_ISO_8601_UTC =
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$/;
+
 export const PLAYER_SCHEMA = z.object({
   teamId: z.number().optional(),
   firstName: z.string().min(2).max(191),
@@ -26,6 +29,22 @@ export const DIVISION_SCHEMA = z.object({
 export type Division = z.infer<typeof DIVISION_SCHEMA>;
 
 export const FIXTURE_SCHEMA = z.object({
-  name: z.string().min(2).max(191),
+  date: z.string().regex(VALID_ISO_8601_UTC),
+  seasonId: z.number(),
+  divisionId: z.number(),
+  homeTeamId: z.number(),
+  awayTeamId: z.number(),
 });
 export type Fixture = z.infer<typeof FIXTURE_SCHEMA>;
+
+export const SEASON_SCHEMA = z.object({
+  name: z.string().min(2).max(191),
+  start: z.string().regex(VALID_ISO_8601_UTC),
+  end: z.string().regex(VALID_ISO_8601_UTC),
+  fixtures: z.array(
+    z.object({
+      id: z.number(),
+    })
+  ),
+});
+export type Season = z.infer<typeof SEASON_SCHEMA>;
