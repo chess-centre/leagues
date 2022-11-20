@@ -1,3 +1,4 @@
+import type { Facilities } from "@prisma/client";
 import { prisma } from "~/db/db.server";
 import type { Venue } from "~/db/schemas.server";
 
@@ -22,7 +23,7 @@ export const createVenue = async ({
     await prisma.facility.createMany({
       data: facilities.map(({ facility }) => ({
         venueId: venue.id,
-        facility,
+        facility: facility as Facilities,
       })),
     });
   }
