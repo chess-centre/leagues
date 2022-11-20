@@ -119,3 +119,38 @@ model Result {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Venue {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  name       String
+  address    String
+  city       String
+  postcode   String
+  website    String?
+  // https://github.com/prisma/prisma/issues/1798
+  long       String?
+  lat        String?
+  image      String?
+  facilities Facility[]
+}
+
+enum Facilities {
+  PARKING
+  BAR
+  DRINKS
+  SNACKS
+}
+
+model Facility {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  venueId     Int
+  venue       Venue      @relation(fields: [venueId], references: [id])
+  facility    Facilities
+  description String?
+
+  @@index([venueId])
+}

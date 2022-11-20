@@ -16,37 +16,25 @@ import {
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import Button from "~/components/core/button";
 import IconButton from "~/components/core/button/icon";
-import { FIXTURE_SCHEMA } from "~/db/schemas.server";
+import { VENUE_SCHEMA } from "~/db/schemas.server";
 import Input from "~/components/core/input";
 import toast from "react-hot-toast";
 import ErrorAlert from "~/components/core/alert/error";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  getFixtures,
-  createFixture,
-  deleteFixture,
-} from "~/db/fixtures.server";
-import { getDivisions } from "~/db/divisions.server";
-import { getSeasons } from "~/db/seasons.server";
-import Select from "~/components/core/select";
-import { getTeams } from "~/db/teams.server";
 import { z } from "zod";
-import { format, parseISO } from "date-fns";
+import { createVenue, deleteVenue, getVenues } from "~/db/venues.server";
+import { FACILITIES } from "~/constants";
+import CheckBox from "~/components/core/checkbox";
+import VenueCard from "~/components/venue/card";
 
 type LoaderData = {
-  fixtures: Awaited<ReturnType<typeof getFixtures>>;
-  seasons: Awaited<ReturnType<typeof getSeasons>>;
-  divisions: Awaited<ReturnType<typeof getDivisions>>;
-  teams: Awaited<ReturnType<typeof getTeams>>;
+  venues: Awaited<ReturnType<typeof getVenues>>;
 };
 
 export const loader: LoaderFunction = async () => {
-  const fixtures = await getFixtures();
-  const seasons = await getSeasons();
-  const divisions = await getDivisions();
-  const teams = await getTeams();
+  const venues = await getVenues();
 
-  return json({ fixtures, seasons, divisions, teams });
+  return json({ venues });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -57,11 +45,11 @@ export const action: ActionFunction = async ({ request }) => {
     case "delete":
       const deleteInput = z
         .object({
-          fixtureId: z.number(),
+          venueId: z.number(),
         })
         .safeParse({
           ...values,
-          ...(values?.fixtureId ? { fixtureId: Number(values.fixtureId) } : {}),
+          ...(values?.venueId ? { venueId: Number(values.venueId) } : {}),
         });
 
       if (!deleteInput.success) {
@@ -75,25 +63,23 @@ export const action: ActionFunction = async ({ request }) => {
       }
 
       const {
-        data: { fixtureId },
+        data: { venueId },
       } = deleteInput;
-      await deleteFixture({ fixtureId });
+      await deleteVenue({ venueId });
 
       return json({ result: "deleted" });
 
     case "create":
-      const createInput = FIXTURE_SCHEMA.safeParse({
+      const createInput = VENUE_SCHEMA.safeParse({
         ...values,
-        ...(values?.homeTeamId
-          ? { homeTeamId: Number(values.homeTeamId) }
+        ...(values?.selectedFacilities &&
+        typeof values?.selectedFacilities === "string"
+          ? {
+              facilities: values.selectedFacilities
+                .split(",")
+                .map((facility) => ({ facility })),
+            }
           : {}),
-        ...(values?.awayTeamId
-          ? { awayTeamId: Number(values.awayTeamId) }
-          : {}),
-        ...(values?.divisionId
-          ? { divisionId: Number(values.divisionId) }
-          : {}),
-        ...(values?.seasonId ? { seasonId: Number(values.seasonId) } : {}),
       });
 
       if (!createInput.success) {
@@ -106,10 +92,10 @@ export const action: ActionFunction = async ({ request }) => {
         return json({ errors, values });
       }
 
-      const { data: fixture } = createInput;
+      const { data: venue } = createInput;
 
-      await createFixture({
-        fixture,
+      await createVenue({
+        venue,
         select: { id: true },
       });
 
@@ -119,11 +105,12 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export default function Fixtures() {
+export default function Venues() {
   const formRef = useRef<HTMLFormElement>(null);
+  const venueName = useRef<HTMLInputElement>(null);
   const transition = useTransition();
   const submit = useSubmit();
-  const { fixtures, seasons, divisions, teams } = useLoaderData<LoaderData>();
+  const { venues } = useLoaderData<LoaderData>();
   const actionData = useActionData();
   const pendingAction =
     transition.state === "submitting" &&
@@ -134,11 +121,12 @@ export default function Fixtures() {
   useEffect(() => {
     if (isSubmitted) {
       formRef?.current?.reset();
+      venueName?.current?.focus();
       if (actionData?.result === "created") {
-        toast.success("Successfully added fixture");
+        toast.success("Successfully added venue");
       }
       if (actionData?.result === "deleted") {
-        toast.success("Successfully deleted fixture");
+        toast.success("Successfully deleted venue");
       }
     }
   }, [actionData?.result, isSubmitted]);
@@ -160,6 +148,9 @@ export default function Fixtures() {
       formData.set("date", utcDate);
     }
 
+    const selectedFacilities = formData.getAll("facilities");
+    formData.set("selectedFacilities", selectedFacilities.join(","));
+
     submit(formData, {
       method: "post",
     });
@@ -174,50 +165,78 @@ export default function Fixtures() {
         onSubmit={handleSubmit}
       >
         <fieldset disabled={isSubmitting}>
-          <Select
-            label="Home Team"
-            name="homeTeamId"
-            options={teams.map((team) => ({
-              label: team.name,
-              value: team.id,
-            }))}
-          />
-
-          <Select
-            label="Away Team"
-            name="awayTeamId"
-            options={teams.map((team) => ({
-              label: team.name,
-              value: team.id,
-            }))}
+          <Input
+            ref={venueName}
+            required
+            label="Name"
+            name="name"
+            type="text"
+            defaultValue={actionData?.values?.name}
+            error={actionData?.errors?.name}
           />
 
           <Input
             required
-            label="Time"
-            name="date"
-            type="datetime-local"
-            defaultValue={actionData?.values?.date}
-            error={actionData?.errors?.date}
+            label="Address"
+            name="address"
+            type="text"
+            defaultValue={actionData?.values?.address}
+            error={actionData?.errors?.address}
           />
 
-          <Select
-            label="Division"
-            name="divisionId"
-            options={divisions.map((division) => ({
-              label: division.name,
-              value: division.id,
-            }))}
+          <Input
+            required
+            label="Town/City"
+            name="city"
+            type="text"
+            defaultValue={actionData?.values?.city}
+            error={actionData?.errors?.city}
           />
 
-          <Select
-            label="Season"
-            name="seasonId"
-            options={seasons.map((season) => ({
-              label: season.name,
-              value: season.id,
-            }))}
+          <Input
+            required
+            label="Postcode"
+            name="postcode"
+            type="text"
+            defaultValue={actionData?.values?.postcode}
+            error={actionData?.errors?.postcode}
           />
+
+          <Input
+            label="Long"
+            name="long"
+            type="text"
+            defaultValue={actionData?.values?.long}
+            error={actionData?.errors?.long}
+          />
+
+          <Input
+            label="Lat"
+            name="lat"
+            type="text"
+            defaultValue={actionData?.values?.lat}
+            error={actionData?.errors?.lat}
+          />
+
+          <Input
+            label="Image Url"
+            name="image"
+            type="text"
+            defaultValue={actionData?.values?.image}
+            error={actionData?.errors?.image}
+          />
+
+          <span className="block font-medium text-gray-700">Facilities</span>
+          {FACILITIES.map(({ label, value }) => {
+            return (
+              <CheckBox
+                key={value}
+                name="facilities"
+                label={label}
+                value={value}
+              />
+            );
+          })}
 
           <div className="flex justify-end">
             <Button
@@ -233,10 +252,13 @@ export default function Fixtures() {
         </fieldset>
       </Form>
 
-      <motion.div className="grow p-2 flex flex-col gap-2" layout>
-        {fixtures?.length ? (
-          fixtures.map((fixture) => (
-            <AnimatePresence key={fixture.id} mode="popLayout">
+      <motion.div
+        className="grow p-2 flex flex-col gap-2 w-full lg:w-[50%]"
+        layout
+      >
+        {venues?.length ? (
+          venues.map((venue) => (
+            <AnimatePresence key={venue.id} mode="popLayout">
               <motion.div
                 className="shadow ring-1 ring-black ring-opacity-5 rounded-md p-2"
                 whileHover={{ scale: 1.01 }}
@@ -248,33 +270,40 @@ export default function Fixtures() {
                   >
                     <div className="flex flex-col">
                       <div>
-                        <span className="font-bold">{`${fixture.homeTeam.name} v ${fixture.awayTeam.name}`}</span>
-                        <span>{` | ${fixture.division.name}`}</span>
+                        <span className="font-bold">{venue.name}</span>
                       </div>
-
-                      <span className="text-sm text-gray-500">
-                        {format(
-                          parseISO(fixture.date),
-                          "dd MMMM yyyy 'at' HH:mm"
-                        )}
-                      </span>
                     </div>
-                    <Input type="hidden" name="fixtureId" value={fixture.id} />
+                    <Input type="hidden" name="venueId" value={venue.id} />
                     <IconButton
                       type="submit"
                       disabled={isSubmitting}
                       name="_action"
                       value="delete"
                       icon={<XMarkIcon className="h-6 w-6" />}
-                      label={`Delete ${fixture.homeTeam.name} v ${fixture.awayTeam.name}`}
+                      label={`Delete ${venue.name}`}
                     />
                   </fieldset>
                 </Form>
               </motion.div>
+              <VenueCard
+                name={venue.name}
+                address={venue.address}
+                city={venue.city}
+                postcode={venue.postcode}
+                image={venue.image}
+                location={{
+                  long: venue.long,
+                  lat: venue.lat,
+                }}
+                facilities={venue.facilities.map((facility) => ({
+                  value: facility.facility,
+                  description: facility.description,
+                }))}
+              />
             </AnimatePresence>
           ))
         ) : (
-          <p>No fixtures yet...</p>
+          <p>No venues yet...</p>
         )}
       </motion.div>
     </div>
@@ -284,7 +313,7 @@ export default function Fixtures() {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <ErrorAlert
-      title="Error occurred in fixture form"
+      title="Error occurred in venue form"
       detail={error.message}
     ></ErrorAlert>
   );

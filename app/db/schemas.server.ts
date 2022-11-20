@@ -48,3 +48,21 @@ export const SEASON_SCHEMA = z.object({
   ),
 });
 export type Season = z.infer<typeof SEASON_SCHEMA>;
+
+export const VENUE_SCHEMA = z.object({
+  name: z.string(),
+  address: z.string(),
+  city: z.string(),
+  postcode: z.string(),
+  long: z.string().nullish(),
+  lat: z.string().nullish(),
+  image: z.string().nullish(),
+  facilities: z
+    .array(
+      z.object({
+        facility: z.enum(["PARKING", "BAR", "DRINKS", "SNACKS"]),
+      })
+    )
+    .nullish(),
+});
+export type Venue = z.infer<typeof VENUE_SCHEMA>;
