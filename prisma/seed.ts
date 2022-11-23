@@ -1,9 +1,23 @@
 import { PrismaClient } from "@prisma/client";
-import { teams, players, ratings, fixtures } from "./mocks";
+import { teams, players, ratings, fixtures, venues, facilities } from "./mocks";
 
 const prisma = new PrismaClient();
 
 async function seed() {
+  console.log("Running seed script");
+  console.log("Deleting existing rows");
+
+  await prisma.facility.deleteMany();
+  await prisma.venue.deleteMany();
+  await prisma.fixture.deleteMany();
+  await prisma.playerRating.deleteMany();
+  await prisma.player.deleteMany();
+  await prisma.team.deleteMany();
+  await prisma.season.deleteMany();
+  await prisma.division.deleteMany();
+  await prisma.league.deleteMany();
+
+  console.log("Deleted existing rows, running seed...");
   // League
   await prisma.league.create({
     data: {
@@ -43,6 +57,12 @@ async function seed() {
   // Fixtures
   // TODO: see issue - https://github.com/chess-centre/leagues/issues/9
   await prisma.fixture.createMany({ data: fixtures });
+
+  // Venue
+  await prisma.venue.createMany({ data: venues });
+
+  // Facilities
+  await prisma.facility.createMany({ data: facilities });
 
   console.log(`Database has been seeded. 🌱`);
 }

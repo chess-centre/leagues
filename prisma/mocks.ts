@@ -1,4 +1,5 @@
 import { Federation, GameType } from "@prisma/client";
+import type { Facilities } from "@prisma/client";
 /**
  * Mock data of the 2022-23 Wharfedale Junior League
  * Example: https://ecflms.org.uk/lms/node/64377/tables
@@ -24,7 +25,7 @@ export const teams = [
     id: 4,
     name: "Orangutans",
     divisionId: 1,
-  }
+  },
 ];
 
 export const players = [
@@ -148,113 +149,113 @@ export const ratings = [
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1154,
-    playerId: 1
+    playerId: 1,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 906,
-    playerId: 2
+    playerId: 2,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 792,
-    playerId: 3
+    playerId: 3,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 507,
-    playerId: 4
+    playerId: 4,
   },
   // Night Hawks
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 728,
-    playerId: 5
+    playerId: 5,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 749,
-    playerId: 6
+    playerId: 6,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 702,
-    playerId: 7
+    playerId: 7,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 397,
-    playerId: 8
+    playerId: 8,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 228,
-    playerId: 9
+    playerId: 9,
   },
   // Leopards
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1527,
-    playerId: 10
+    playerId: 10,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1306,
-    playerId: 11
+    playerId: 11,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1178,
-    playerId: 12
+    playerId: 12,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1223,
-    playerId: 13
+    playerId: 13,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 742,
-    playerId: 14
+    playerId: 14,
   },
   // Orangutans
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1188,
-    playerId: 15
+    playerId: 15,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 1088,
-    playerId: 16
+    playerId: 16,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 669,
-    playerId: 17
+    playerId: 17,
   },
   {
     type: GameType.rapidplay,
     federation: Federation.ECF,
     rating: 369,
-    playerId: 18
-  }
+    playerId: 18,
+  },
 ];
 
 export const fixtures = [
@@ -264,7 +265,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 3,
-    awayTeamId: 1
+    awayTeamId: 1,
   },
   {
     id: 2,
@@ -272,7 +273,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 2,
-    awayTeamId: 4
+    awayTeamId: 4,
   },
   {
     id: 3,
@@ -280,7 +281,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 1,
-    awayTeamId: 4
+    awayTeamId: 4,
   },
   {
     id: 4,
@@ -288,7 +289,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 3,
-    awayTeamId: 2
+    awayTeamId: 2,
   },
   {
     id: 5,
@@ -296,7 +297,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 2,
-    awayTeamId: 1
+    awayTeamId: 1,
   },
   {
     id: 6,
@@ -304,7 +305,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 4,
-    awayTeamId: 3
+    awayTeamId: 3,
   },
   {
     id: 7,
@@ -312,7 +313,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 3,
-    awayTeamId: 1
+    awayTeamId: 1,
   },
   {
     id: 8,
@@ -320,7 +321,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 2,
-    awayTeamId: 4
+    awayTeamId: 4,
   },
   {
     id: 9,
@@ -328,7 +329,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 1,
-    awayTeamId: 4
+    awayTeamId: 4,
   },
   {
     id: 10,
@@ -336,7 +337,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 3,
-    awayTeamId: 2
+    awayTeamId: 2,
   },
   {
     id: 11,
@@ -344,7 +345,7 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 2,
-    awayTeamId: 1
+    awayTeamId: 1,
   },
   {
     id: 12,
@@ -352,7 +353,47 @@ export const fixtures = [
     seasonId: 1,
     divisionId: 1,
     homeTeamId: 4,
-    awayTeamId: 3
-  }
+    awayTeamId: 3,
+  },
 ];
 
+export const venues = [
+  {
+    id: 1,
+    name: "Springfield College",
+    address: "123 South Street",
+    city: "Springfield",
+    postcode: "A123456",
+  },
+  {
+    id: 2,
+    name: "The Shard",
+    address: "32 London Bridge St",
+    city: "London",
+    postcode: "SE1 9SG",
+    long: "51.50463020430712",
+    lat: "-0.08648927291608077",
+    image: "https://images.unsplash.com/photo-1465850238811-80ce79442c7a",
+  },
+];
+
+export const facilities = [
+  {
+    id: 1,
+    venueId: 2,
+    facility: "BAR" as Facilities,
+    description: "Cocktail bar",
+  },
+  {
+    id: 2,
+    venueId: 2,
+    facility: "SNACKS" as Facilities,
+    description: "Premium snack",
+  },
+  {
+    id: 3,
+    venueId: 1,
+    facility: "PARKING" as Facilities,
+    description: "Secure car parking for 80 cars",
+  },
+];

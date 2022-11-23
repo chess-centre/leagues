@@ -7,6 +7,7 @@ const ADMIN_LINKS = [
   { label: "Leagues", link: "/admin/leagues" },
   { label: "Divisions", link: "/admin/divisions" },
   { label: "Fixtures", link: "/admin/fixtures" },
+  { label: "Venues", link: "/admin/venues" },
 ];
 
 export default function Sales() {

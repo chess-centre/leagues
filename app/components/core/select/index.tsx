@@ -29,7 +29,7 @@ const Select = ({
   disabled = false,
   required = false,
   value,
-  options,
+  options = [],
   defaultValue = "none",
   error,
   onChange = () => ({}),
