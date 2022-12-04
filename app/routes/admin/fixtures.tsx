@@ -31,7 +31,7 @@ import { getSeasons } from "~/db/seasons.server";
 import Select from "~/components/core/select";
 import { getTeams } from "~/db/teams.server";
 import { z } from "zod";
-import { format, parseISO } from "date-fns";
+import FixtureCard from "~/components/fixture/card";
 
 type LoaderData = {
   fixtures: Awaited<ReturnType<typeof getFixtures>>;
@@ -246,19 +246,6 @@ export default function Fixtures() {
                     className="flex items-center justify-between"
                     disabled={isSubmitting}
                   >
-                    <div className="flex flex-col">
-                      <div>
-                        <span className="font-bold">{`${fixture.homeTeam.name} v ${fixture.awayTeam.name}`}</span>
-                        <span>{` | ${fixture.division.name}`}</span>
-                      </div>
-
-                      <span className="text-sm text-gray-500">
-                        {format(
-                          parseISO(fixture.date),
-                          "dd MMMM yyyy 'at' HH:mm"
-                        )}
-                      </span>
-                    </div>
                     <Input type="hidden" name="fixtureId" value={fixture.id} />
                     <IconButton
                       type="submit"
@@ -271,6 +258,13 @@ export default function Fixtures() {
                   </fieldset>
                 </Form>
               </motion.div>
+              <FixtureCard
+                homeTeam={fixture.homeTeam.name}
+                awayTeam={fixture.awayTeam.name}
+                league={fixture.division.league.name}
+                division={fixture.division.name}
+                start={fixture.date}
+              />
             </AnimatePresence>
           ))
         ) : (
