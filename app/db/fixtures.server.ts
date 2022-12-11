@@ -28,7 +28,11 @@ export const getFixtures = async () => {
     include: {
       homeTeam: true,
       awayTeam: true,
-      division: true,
+      division: {
+        include: {
+          league: true,
+        },
+      },
     },
   });
 
